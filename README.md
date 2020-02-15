@@ -1,6 +1,6 @@
 # ClementClementCo
 
-This Git will be used to ensure the great developement about this project.
+This Git will be used to ensure the good developement about this project.
 
 ## Information about the project
 
