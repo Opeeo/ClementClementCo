@@ -7,8 +7,9 @@ module.exports = (sequelize, DataTypes) => {
     surname: DataTypes.STRING,
     email: DataTypes.STRING,
     password: DataTypes.STRING,
+    isPrivate: DataTypes.INTEGER,
     idStatus: DataTypes.INTEGER,
-    createAt: DataTypes.DATE,
+    createdAt: DataTypes.DATE,
     updatedAt: DataTypes.DATE
   }, {});
   Users.associate = function(models) {
@@ -21,7 +22,7 @@ module.exports = (sequelize, DataTypes) => {
     models.Users.hasMany(models.Reportscomments);
     models.Users.hasMany(models.Addfriend);
 
-    models.Users.belongTo(models.Statues, {
+    models.Users.belongsTo(models.Statues, {
       foreignKey: {
         allowNull: false
       }

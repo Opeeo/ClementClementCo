@@ -7,13 +7,13 @@ module.exports = (sequelize, DataTypes) => {
   }, {});
   Comments.associate = function(models) {
     // associations can be defined here
-    models.Comments.belongTo(models.Users, {
+    models.Comments.belongsTo(models.Users, {
       foreignKey: {
         allowNull: false
       }
     });
 
-    models.Comments.belongTo(models.Pictures, {
+    models.Comments.belongsTo(models.Pictures, {
       foreignKey: {
         allowNull: false
       }

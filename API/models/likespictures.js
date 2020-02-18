@@ -6,13 +6,13 @@ module.exports = (sequelize, DataTypes) => {
   }, {});
   Likespictures.associate = function(models) {
     // associations can be defined here
-    models.Likespictures.belongTo(models.Users, {
+    models.Likespictures.belongsTo(models.Users, {
       foreignKey: {
         allowNull: false
       }
     });
 
-    models.Likespictures.belongTo(models.Pictures, {
+    models.Likespictures.belongsTo(models.Pictures, {
       foreignKey: {
         allowNull: false
       }

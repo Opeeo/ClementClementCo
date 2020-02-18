@@ -6,13 +6,13 @@ module.exports = (sequelize, DataTypes) => {
   }, {});
   Likescomments.associate = function(models) {
     // associations can be defined here
-    models.Likescomments.belongTo(models.Users, {
+    models.Likescomments.belongsTo(models.Users, {
       foreignKey: {
         allowNull: false
       }
     });
 
-    models.Likescomments.belongTo(models.Comments, {
+    models.Likescomments.belongsTo(models.Comments, {
       foreignKey: {
         allowNull: false
       }

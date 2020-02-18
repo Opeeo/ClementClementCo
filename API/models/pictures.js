@@ -7,7 +7,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {});
   Pictures.associate = function(models) {
     // associations can be defined here
-    models.Pictures.belongTo(models.Users, {
+    models.Pictures.belongsTo(models.Users, {
       foreignKey: {
         allowNull: false
       }
