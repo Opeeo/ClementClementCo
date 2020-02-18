@@ -31,6 +31,10 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING
       },
+      isPrivate: {
+        allowNull: false,
+        type: Sequelize.BOOLEAN
+      },
       idStatus: {
         allowNull: false,
         type: Sequelize.INTEGER,
