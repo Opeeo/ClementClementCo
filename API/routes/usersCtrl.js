@@ -84,6 +84,7 @@ module.exports = {
     }
 
     models.Users.findOne({
+        attributes: ['email', 'password', 'id', 'name', 'username', 'surname', 'isPrivate', 'idStatus', 'pathPP', 'createdAt', 'updatedAt'],
         where: { email: email }
     })
     .then(function(userFound) {
@@ -96,7 +97,7 @@ module.exports = {
                         'token': jwtUtils.generateTokenForUser(userFound)
                     })
                 } else {
-                    return res.status(403).json({ 'error': 'invalid password'});
+                    return res.status(403).json({ 'error': 'invalid password' });
                 }
             })
         } else {
