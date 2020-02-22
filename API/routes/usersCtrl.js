@@ -23,19 +23,36 @@ module.exports = {
     console.log(password);
 
     if (email == null || username == null || password == null || name == null || surname == null) {
-      return res.status(400).json({ 'error': 'missing parameters' });
+      return res.status(400).json({
+        'success': false,
+        'message': 'missing parameters',
+        'data': {}
+    })
     }
 
     if (username.length >= 13 || username.length <= 4) {
-      return res.status(400).json({ 'error': 'wrong username (must be length 5 - 12)' });
+      return res.status(400).json({
+        'success': false,
+        'message': 'Wrong parameters:  username must be lenght 5-12',
+        'data': {}
+    })
     }
 
     if (!EMAIL_REGEX.test(email)) {
-      return res.status(400).json({ 'error': 'email is not valid' });
+      return res.status(400).json({
+        'success': false,
+        'message': 'email is not valid',
+        'data': {}
+    })
     }
 
     if (!PASSWORD_REGEX.test(password)) {
-      return res.status(400).json({ 'error': 'password invalid (must length 4 - 8 and include 1 number at least)' });
+      return res.status(200).json({
+        'success': true,
+        'message': 'password invalid (must length 4 - 8 and include 1 number at least)',
+        'data': {'user': newUser}
+    }) 
+    
     }
 
         models.Users.findOne({
@@ -54,24 +71,39 @@ module.exports = {
                         email: email,
                         password: bcryptedPassword,
                         isPrivate: 0,
-                        idStatus: 2
+                        StatueId: 2
                     })
                     .then(function(newUser){
-                        return res.status(201).json({
-                            'userId': newUser.id
-                        });
+                      return res.status(200).json({
+                        'success': true,
+                        'message': 'User added',
+                        'data': {'user': newUser}
+                    })
                     })
                     .catch(function(err){
-                        return res.status(500).json({ 'error': 'connot add user'});
+                      return res.status(500).json({
+                        'success': false,
+                        'message': 'Cannot add user',
+                        'err': err,
+                        'data': {}
+                      })
                     });
             });
 
           } else {
-              return res.status(409).json({ 'error': 'user already exist' });
+            return res.status(409).json({
+              'success': false,
+              'message': 'User already exist',
+              'data': {}
+            })
           }
         })
         .catch(function(err) {
-          return res.status(500).json({ 'error': 'unable to verify user' });
+          return res.status(403).json({
+            'success': false,
+            'message': 'Database error',
+            'data': {}
+          })
         });
   },
   login: function(req, res) {
@@ -80,35 +112,51 @@ module.exports = {
     var password = req.body.password;
 
     if (email == null ||  password == null) {
-        return res.status(400).json({ 'error': 'missing parameters' });
+      return res.status(400).json({
+        'success': false,
+        'message': 'Missing parameters',
+        'data': {}
+      })
     }
 
     models.Users.findOne({
-        attributes: ['email', 'password', 'id', 'name', 'username', 'surname', 'isPrivate', 'idStatus', 'pathPP', 'createdAt', 'updatedAt'],
-        where: { email: email }
+        attributes: ['email', 'password', 'id', 'name', 'username', 'surname', 'isPrivate', 'StatueId', 'pathPP', 'createdAt', 'updatedAt'],
+        where: { email: email },
+        include: {model: models.Statues}
     })
     .then(function(userFound) {
         if (userFound){
 
             bcrypt.compare(password, userFound.password, function(errBcrypt, resBcrypt){
-                if(resBcrypt){
-                    return res.status(200).json({
-                        'userId': userFound.id,
-                        'token': jwtUtils.generateTokenForUser(userFound)
-                    })
+                if(resBcrypt){                  
+                  return res.status(200).json({
+                    'success': true,
+                    'message': 'User found',
+                    'data': {'user': userFound, 'token': jwtUtils.generateTokenForUser(userFound)}
+                })
                 } else {
-                    return res.status(403).json({ 'error': 'invalid password' });
+                  return res.status(403).json({
+                    'success': false,
+                    'message': 'Invalid password',
+                    'data': {}
+                  })
                 }
             })
         } else {
-            return res.status(403).json({ 'error': 'user not exist in DB'})
+            return res.status(403).json({
+              'success': false,
+              'message': 'User not found',
+              'data': {}
+            })
         }
     
     })
     .catch(function(err) {
-        return res.status(500).json({ 'error': err})
+      return res.status(500).json({
+        'success': false,
+        'message': 'Databse error',
+        'data': {}
+      })
     })
-    
-
-}
+  }
 }
