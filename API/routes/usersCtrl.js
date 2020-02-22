@@ -48,9 +48,9 @@ module.exports = {
 
     if (!PASSWORD_REGEX.test(password)) {
       return res.status(200).json({
-        'success': true,
+        'success': false,
         'message': 'password invalid (must length 4 - 8 and include 1 number at least)',
-        'data': {'user': newUser}
+        'data': {}
     }) 
     
     }
