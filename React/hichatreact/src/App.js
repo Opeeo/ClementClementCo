@@ -8,10 +8,9 @@ class App extends React.Component {
 
   handleClick = () => {
     axios
-    .get('http://localhost:8080/api/users/recupInfo')
+    .get('http://localhost:8080/api/users/recupInfo', {params : {email: 'clement@gmail.com'}})
     .then(data => (this.setState({data: data})))
     .catch(err => (console.log(err)))
-    console.log(this.state);
   }
 
   render() {
