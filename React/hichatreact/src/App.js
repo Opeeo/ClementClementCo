@@ -4,13 +4,11 @@ import './App.css';
 
 class App extends React.Component {
 
-  state = {
-    data: null 
-  };
+  state = null
 
   handleClick = () => {
     axios
-    .get('https://localhost:8080/api/users/recupInfo')
+    .get('http://localhost:8080/api/users/recupInfo')
     .then(data => (this.setState({data: data})))
     .catch(err => (console.log(err)))
     console.log(this.state);
